@@ -1,8 +1,13 @@
+import 'package:astroventure/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'game_controller.dart';
+import 'gamedata.dart';
+
 class Controls extends StatefulWidget {
-  const Controls({Key key}) : super(key: key);
+  const Controls({Key key, @required this.controller}) : super(key: key);
+  final GameController controller;
 
   @override
   State<Controls> createState() => _ControlsState();
@@ -29,14 +34,20 @@ class _ControlsState extends State<Controls> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: controller,
-      onPageChanged: (i)=> setState(()=> currentIndex=i),
-      children: [
-        _ControlItem(title: 'Option 1', index: 0, currentIndex: currentIndex),
-        _ControlItem(title: 'Option 2', index: 1, currentIndex: currentIndex),
-        _ControlItem(title: 'Option 3', index: 2, currentIndex: currentIndex),
-      ],
+    return ValueListenableBuilder<GameData>(
+      valueListenable: widget.controller.currentData,
+      builder: (context, data, _) {
+        return PageView(
+          controller: controller,
+          onPageChanged: (i)=> setState(()=> currentIndex=i),
+          children: List.generate(data.options.length, (i) => _ControlItem(option: data.options[i], index: i, currentIndex: currentIndex, onTap: (){
+            List<String> temp = widget.controller.texts.value;
+            temp.add(gameData[0].text);
+            widget.controller.texts.value = [];
+            widget.controller.texts.value = temp;
+          },)),
+        );
+      }
     );
   }
 }
@@ -44,8 +55,9 @@ class _ControlsState extends State<Controls> {
 
 
 class _ControlItem extends StatelessWidget {
-  const _ControlItem({Key key, @required this.title, this.onTap, @required this.index, this.currentIndex}) : super(key: key);
-  final String title;
+  const _ControlItem({Key key, @required this.option, @required this.controller, this.onTap, @required this.index, this.currentIndex}) : super(key: key);
+  final Option option;
+  final GameController controller;
   final VoidCallback onTap;
   final int index;
   final int currentIndex;
@@ -63,7 +75,7 @@ class _ControlItem extends StatelessWidget {
         opacity: index==currentIndex?1:0.2,
         child: Center(
           child: Text(
-            title,
+            option.text,
             style: const TextStyle(color: Color(0xff00FFCD), fontSize: 24),
           ),
         ),
