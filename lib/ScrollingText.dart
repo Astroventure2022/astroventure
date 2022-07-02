@@ -71,7 +71,6 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
               child: ValueListenableBuilder<List<String>>(
                   valueListenable: widget.controller.texts,
                   builder: (context, texts, widget) {
-                    print(texts);
                     return Column(
                       children: List.generate(texts.length, (i) => AnimatedTextKit(
                         repeatForever: false,

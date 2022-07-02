@@ -40,12 +40,14 @@ class _ControlsState extends State<Controls> {
         return PageView(
           controller: controller,
           onPageChanged: (i)=> setState(()=> currentIndex=i),
-          children: List.generate(data.options.length, (i) => _ControlItem(option: data.options[i], index: i, currentIndex: currentIndex, onTap: (){
-            List<String> temp = widget.controller.texts.value;
-            temp.add(gameData[0].text);
-            widget.controller.texts.value = [];
-            widget.controller.texts.value = temp;
-          },)),
+          children: List.generate(
+            data.options.length,
+                (i) => _ControlItem(
+                  option: data.options[i],
+                  index: i,
+                  currentIndex: currentIndex,
+                  controller: widget.controller,),
+          ),
         );
       }
     );
@@ -68,7 +70,15 @@ class _ControlItem extends StatelessWidget {
       onDoubleTap: () {
         if(index==currentIndex){
           HapticFeedback.heavyImpact();
-          if (onTap != null) onTap();
+
+          List<String> temp = controller.texts.value;
+
+          GameData selectedGameData = gameData.firstWhere((element)=> element.id==option.gameDataId);
+
+          temp.add(selectedGameData.text);
+          controller.texts.value = [];
+          controller.texts.value = temp;
+          controller.currentData.value = selectedGameData;
         }
       },
       child: Opacity(
