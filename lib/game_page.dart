@@ -21,6 +21,7 @@ class _GamePageState extends State<GamePage> {
   initState() {
     gameController = GameController();
     gameController.currentData = ValueNotifier<GameData>(gameData[0]);
+    gameController.isAnimating = ValueNotifier<bool>(true);
     gameController.texts = ValueNotifier<List<String>>([gameController.currentData.value.text]);
     super.initState();
   }

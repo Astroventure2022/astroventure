@@ -70,7 +70,7 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: ValueListenableBuilder<List<String>>(
                   valueListenable: widget.controller.texts,
-                  builder: (context, texts, widget) {
+                  builder: (context, texts, _) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(texts.length, (i) => Padding(
@@ -78,7 +78,15 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
                         child: AnimatedTextKit(
                           repeatForever: false,
                           isRepeatingAnimation: false,
-                          animatedTexts: [TypewriterAnimatedText(texts[i], textStyle: const TextStyle(color: CustomColors.text, fontSize: 18))],
+                          // displayFullTextOnTap: true,
+                          // onTap: (){
+                          //   _scroll();
+                          //   widget.controller.isAnimating.value = false;
+                          // },
+                          onFinished: (){
+                            widget.controller.isAnimating.value = false;
+                          },
+                          animatedTexts: [TypewriterAnimatedText(texts[i], textStyle: const TextStyle(color: CustomColors.text, fontSize: 18), speed: Duration(milliseconds: 10))],
                         ),
                       )),
                     );

@@ -15,13 +15,12 @@ class Controls extends StatefulWidget {
 
 class _ControlsState extends State<Controls> {
   PageController controller;
-  int currentIndex = 1;
 
   @override
   void initState() {
     controller = PageController(
       viewportFraction: 0.3,
-      initialPage: currentIndex,
+      initialPage: 0,
     );
     super.initState();
   }
@@ -37,17 +36,27 @@ class _ControlsState extends State<Controls> {
     return ValueListenableBuilder<GameData>(
       valueListenable: widget.controller.currentData,
       builder: (context, data, _) {
-        return PageView(
-          controller: controller,
-          onPageChanged: (i)=> setState(()=> currentIndex=i),
-          children: List.generate(
-            data.options.length,
-                (i) => _ControlItem(
-                  option: data.options[i],
-                  index: i,
-                  currentIndex: currentIndex,
-                  controller: widget.controller,),
-          ),
+        // if(controller.hasClients) controller.jumpToPage(0);
+        return ValueListenableBuilder<bool>(
+          valueListenable: widget.controller.isAnimating,
+          builder: (context, animating, _) {
+            if(!animating) {
+              return PageView(
+                controller: controller,
+                // onPageChanged: (i)=> setState(()=> currentIndex=i),
+                children: List.generate(
+                  data.options.length,
+                      (i) => _ControlItem(
+                    option: data.options[i],
+                    index: i,
+                    // currentIndex: currentIndex,
+                    controller: widget.controller,),
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
         );
       }
     );
@@ -57,32 +66,33 @@ class _ControlsState extends State<Controls> {
 
 
 class _ControlItem extends StatelessWidget {
-  const _ControlItem({Key key, @required this.option, @required this.controller, this.onTap, @required this.index, this.currentIndex}) : super(key: key);
+  const _ControlItem({Key key, @required this.option, @required this.controller, this.onTap, @required this.index}) : super(key: key);
   final Option option;
   final GameController controller;
   final VoidCallback onTap;
   final int index;
-  final int currentIndex;
+  // final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onDoubleTap: () {
-        if(index==currentIndex){
-          HapticFeedback.heavyImpact();
+        HapticFeedback.heavyImpact();
 
-          List<String> temp = controller.texts.value;
+        controller.isAnimating.value = true;
 
-          GameData selectedGameData = gameData.firstWhere((element)=> element.id==option.gameDataId);
+        List<String> temp = controller.texts.value;
 
-          temp.add(selectedGameData.text);
-          controller.texts.value = [];
-          controller.texts.value = temp;
-          controller.currentData.value = selectedGameData;
-        }
+        GameData selectedGameData = gameData.firstWhere((element)=> element.id==option.gameDataId);
+
+        // if(selectedGameData.id==1) temp = [];
+        temp.add(selectedGameData.text);
+        controller.texts.value = [];
+        controller.texts.value = temp;
+        controller.currentData.value = selectedGameData;
       },
       child: Opacity(
-        opacity: index==currentIndex?1:0.2,
+        opacity: 1,
         child: Center(
           child: Text(
             option.text,

@@ -6,6 +6,8 @@ class GameController{
 
   ValueNotifier<List<String>> texts;
 
+  ValueNotifier<bool> isAnimating;
+
   dispose(){
     currentData.dispose();
     texts.dispose();
