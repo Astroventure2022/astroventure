@@ -86,7 +86,8 @@ class _ControlItem extends StatelessWidget {
         child: Center(
           child: Text(
             option.text,
-            style: const TextStyle(color: Color(0xff00FFCD), fontSize: 24),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Color(0xff00FFCD), fontSize: 24,),
           ),
         ),
       ),

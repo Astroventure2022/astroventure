@@ -72,10 +72,14 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
                   valueListenable: widget.controller.texts,
                   builder: (context, texts, widget) {
                     return Column(
-                      children: List.generate(texts.length, (i) => AnimatedTextKit(
-                        repeatForever: false,
-                        isRepeatingAnimation: false,
-                        animatedTexts: [TypewriterAnimatedText(texts[i], textStyle: const TextStyle(color: CustomColors.text, fontSize: 18))],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(texts.length, (i) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: AnimatedTextKit(
+                          repeatForever: false,
+                          isRepeatingAnimation: false,
+                          animatedTexts: [TypewriterAnimatedText(texts[i], textStyle: const TextStyle(color: CustomColors.text, fontSize: 18))],
+                        ),
                       )),
                     );
                   }),
