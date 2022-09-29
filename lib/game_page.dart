@@ -115,12 +115,15 @@ class _GamePageState extends State<GamePage> {
               Center(
                 child: Hero(
                   tag: "missionName",
-                  child: Text(
-                    widget.missionName,
-                    style: const TextStyle(
-                      color: CustomColors.primary,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      widget.missionName,
+                      style: const TextStyle(
+                        color: CustomColors.primary,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -208,22 +211,25 @@ class _FeatureItem extends StatelessWidget {
         HapticFeedback.heavyImpact();
         if(onTap!=null) onTap();
       },
-      child: Opacity(
-        opacity: 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              feature.title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: CustomColors.accent, fontSize: 28, fontWeight: FontWeight.w600),
-            ),
-            Text(
-              feature.cost.toStringAsFixed(2),
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: CustomColors.secondary, fontSize: 22,),
-            ),
-          ],
+      child: Container(
+        color: Colors.transparent,
+        child: Opacity(
+          opacity: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                feature.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: CustomColors.accent, fontSize: 28, fontWeight: FontWeight.w600),
+              ),
+              Text(
+                feature.cost.toStringAsFixed(2),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: CustomColors.secondary, fontSize: 22,),
+              ),
+            ],
+          ),
         ),
       ),
     );

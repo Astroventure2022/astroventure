@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class GameData{
   int id;
   String text;
@@ -21,4 +23,32 @@ class Feature{
   double cost;
 
   Feature({this.id, this.title, this.description, this.cost});
+}
+
+class ControlOption{
+  int id;
+  String title;
+
+  ControlOption({this.id, this.title});
+}
+
+class Guide{
+  int id;
+  String title;
+  List<GuideCategory> categories;
+  Guide({this.id, this.title, this.categories});
+}
+
+class GuideCategory{
+  int id;
+  String title;
+  List<GuideItem> items;
+  GuideCategory({this.id, this.title, this.items});
+}
+
+class GuideItem{
+  int id;
+  String title;
+  String text;
+  GuideItem({this.id, this.title, this.text});
 }

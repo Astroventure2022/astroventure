@@ -79,17 +79,17 @@ class _ControlItem extends StatelessWidget {
       onDoubleTap: () {
         HapticFeedback.heavyImpact();
 
-        controller.isAnimating.value = true;
-
-        List<String> temp = controller.texts.value;
-
-        GameData selectedGameData = gameData.firstWhere((element)=> element.id==option.gameDataId);
-
-        // if(selectedGameData.id==1) temp = [];
-        temp.add(selectedGameData.text);
-        controller.texts.value = [];
-        controller.texts.value = temp;
-        controller.currentData.value = selectedGameData;
+        // controller.isAnimating.value = true;
+        //
+        // List<String> temp = controller.texts.value;
+        //
+        // GameData selectedGameData = gameData.firstWhere((element)=> element.id==option.gameDataId);
+        //
+        // // if(selectedGameData.id==1) temp = [];
+        // temp.add(selectedGameData.text);
+        // controller.texts.value = [];
+        // controller.texts.value = temp;
+        // controller.currentData.value = selectedGameData;
       },
       child: Opacity(
         opacity: 1,

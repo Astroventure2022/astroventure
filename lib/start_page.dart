@@ -51,12 +51,15 @@ class _StartPageState extends State<StartPage> {
                 children: [
                   const Hero(
                     tag: "missionName",
-                    child: Text(
-                      missionTitle,
-                      style: TextStyle(
-                        color: CustomColors.primary,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Text(
+                        missionTitle,
+                        style: TextStyle(
+                          color: CustomColors.primary,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

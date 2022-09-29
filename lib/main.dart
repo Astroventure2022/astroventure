@@ -1,3 +1,4 @@
+import 'package:astroventure/home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'start_page.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Astroventure',
       theme: ThemeData(fontFamily: 'vt323'),
-      home: const StartPage(),
+      home: const HomePage(),
     );
   }
 }
