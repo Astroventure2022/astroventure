@@ -13,3 +13,12 @@ class Option{
 
   Option({this.id, this.text, this.gameDataId});
 }
+
+class Feature{
+  int id;
+  String title;
+  String description;
+  double cost;
+
+  Feature({this.id, this.title, this.description, this.cost});
+}

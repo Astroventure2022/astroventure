@@ -9,15 +9,15 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'game_controller.dart';
 
-class ScrollingText extends StatefulWidget {
-  const ScrollingText({Key key, @required this.controller}) : super(key: key);
+class ScrollText extends StatefulWidget {
+  const ScrollText({Key key, @required this.controller}) : super(key: key);
   final GameController controller;
 
   @override
-  State<ScrollingText> createState() => _ScrollingTextState();
+  State<ScrollText> createState() => _ScrollTextState();
 }
 
-class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateMixin {
+class _ScrollTextState extends State<ScrollText> with TickerProviderStateMixin {
   ScrollController _scrollController;
   Timer timer;
   final Duration duration = const Duration(milliseconds: 300);
@@ -86,7 +86,13 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
                           onFinished: (){
                             widget.controller.isAnimating.value = false;
                           },
-                          animatedTexts: [TypewriterAnimatedText(texts[i], textStyle: const TextStyle(color: CustomColors.text, fontSize: 18), speed: Duration(milliseconds: 10))],
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              texts[i],
+                              textStyle: const TextStyle(color: CustomColors.primary, fontSize: 18),
+                              speed: const Duration(milliseconds: 10),
+                            ),
+                          ],
                         ),
                       )),
                     );
@@ -96,16 +102,8 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
         ),
         Container(
           height: 100,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: FractionalOffset.topCenter,
-              end: FractionalOffset.bottomCenter,
-              colors: [
-                Color(0xff272324),
-                Color(0x00272324),
-              ],
-              stops: [0.1, 1.0],
-            ),
+          decoration:  BoxDecoration(
+            gradient: CustomColors.fadeGradient
           ),
         ),
       ],
