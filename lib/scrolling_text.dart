@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 class ScrollingText extends StatefulWidget {
-  const ScrollingText({Key key, @required this.text, this.onDone}) : super(key: key);
+  const ScrollingText({Key key, @required this.text, this.onDone, this.textColor}) : super(key: key);
   final String text;
   final VoidCallback onDone;
+  final Color textColor;
 
   @override
   State<ScrollingText> createState() => _ScrollingTextState();
@@ -63,7 +64,7 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             controller: _scrollController,
-            padding: const EdgeInsets.only(top: 100),
+            padding: const EdgeInsets.only(top: 50),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AnimatedTextKit(
@@ -80,7 +81,7 @@ class _ScrollingTextState extends State<ScrollingText> with TickerProviderStateM
                 animatedTexts: [
                   TypewriterAnimatedText(
                     widget.text,
-                    textStyle: const TextStyle(color: CustomColors.primary, fontSize: 18),
+                    textStyle: TextStyle(color: widget.textColor??CustomColors.primary, fontSize: 18),
                     speed: const Duration(milliseconds: 10),
                   ),
                 ],

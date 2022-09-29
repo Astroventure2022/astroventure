@@ -33,18 +33,21 @@ class _SliderControlState extends State<SliderControl> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: controller,
-      physics: const BouncingScrollPhysics(),
-      onPageChanged: onPageChange,
-      itemBuilder: (context,i){
-        int index = i%widget.options.length;
-        return _ControlItem(
-          option: widget.options[index],
-          onTap: ()=> widget.onSelect(widget.options[index]),
-        );
-      },
-    );
+    if(widget.options.isNotEmpty) {
+      return PageView.builder(
+        controller: controller,
+        physics: const BouncingScrollPhysics(),
+        onPageChanged: onPageChange,
+        itemBuilder: (context,i){
+          int index = i%widget.options.length;
+          return _ControlItem(
+            option: widget.options[index],
+            onTap: ()=> widget.onSelect(widget.options[index]),
+          );
+        },
+      );
+    }
+    return Container();
   }
 }
 
@@ -56,7 +59,7 @@ class _ControlItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () {
+      onTap: () {
         HapticFeedback.heavyImpact();
         if(onTap!=null) onTap();
       },

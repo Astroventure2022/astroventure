@@ -25,7 +25,12 @@ List<Guide> guides = [
             id: 1,
             title: 'Hyper-Gravity',
             text: 'Details about micro gravity.',
-          )
+          ),
+          GuideItem(
+            id: 2,
+            title: 'Dummy Data',
+            text: 'This is a dummy data',
+          ),
         ]
       ),
       GuideCategory(

@@ -1,4 +1,5 @@
 import 'package:astroventure/colors.dart';
+import 'package:astroventure/guide/details.dart';
 import 'package:astroventure/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -23,12 +24,19 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
     });
   }
 
+  void onSelect(ControlOption c){
+    var selectedCategory = widget.guide.categories.firstWhere((element) => element.id==c.id);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => GuideDetailsPage(category: selectedCategory)));
+  }
+
   @override
   void initState() {
-    for(var c in widget.guide.categories){
-      options.add(ControlOption(id: c.id, title: c.title));
+    if(widget.guide.categories!=null){
+      for(var c in widget.guide.categories){
+        options.add(ControlOption(id: c.id, title: c.title));
+      }
+      currentCategory = widget.guide.categories.first;
     }
-    currentCategory = widget.guide.categories.first;
     super.initState();
   }
 
@@ -76,7 +84,7 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
                             ),
                           ),
                           const SizedBox(height: 14),
-                          ...List.generate(currentCategory.items.length, (index) => Padding(
+                          ...List.generate(currentCategory?.items?.length??0, (index) => Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
                               '${index+1}. ${currentCategory.items[index].title}',
@@ -96,8 +104,7 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
                 flex: 1,
                 child: SliderControl(
                   options: options,
-                  onSelect: (c){
-                  },
+                  onSelect: onSelect,
                   onChange: onCategoryChange,
                 ),
               ),

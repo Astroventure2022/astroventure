@@ -40,7 +40,10 @@ class _GamePageState extends State<GamePage> {
         });
       }
     } else {
-      HapticFeedback.lightImpact();
+      setState(() {
+        credit += feature.cost;
+        selectedFeatures.remove(feature);
+      });
     }
   }
 
@@ -141,7 +144,7 @@ class _GamePageState extends State<GamePage> {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: DottedBorder(
+                  child: selectedFeatures.isEmpty ? const SizedBox():DottedBorder(
                     borderType: BorderType.RRect,
                     radius: const Radius.circular(8),
                     color: CustomColors.primary.withOpacity(0.4),

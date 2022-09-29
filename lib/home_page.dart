@@ -1,5 +1,6 @@
 import 'package:astroventure/guide_page.dart';
 import 'package:astroventure/slider_control.dart';
+import 'package:astroventure/tts.dart';
 import 'package:astroventure/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,10 @@ class _HomePageState extends State<HomePage> {
                   } else {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const GuidesPage()));
                   }
+                },
+                onChange: (c){
+                  Speaker speaker = Speaker();
+                  speaker.speak(c.title);
                 },
               ),
             ),
