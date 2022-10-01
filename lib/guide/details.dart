@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../colors.dart';
 import '../slider_control.dart';
+import '../tts.dart';
 
 class GuideDetailsPage extends StatefulWidget {
-  const GuideDetailsPage({Key key, @required this.category}) : super(key: key);
+  const GuideDetailsPage({Key key, @required this.category, @required this.speaker}) : super(key: key);
   final GuideCategory category;
+  final Speaker speaker;
 
   @override
   State<GuideDetailsPage> createState() => _GuideDetailsPageState();
@@ -33,6 +35,12 @@ class _GuideDetailsPageState extends State<GuideDetailsPage> {
     setState(() {
       selectedGuide = widget.category.items.firstWhere((element) => element.id==c.id);
     });
+    widget.speaker.speak(selectedGuide.title);
+  }
+
+  void readDetail(ControlOption c){
+      selectedGuide = widget.category.items.firstWhere((element) => element.id==c.id);
+      widget.speaker.speak(selectedGuide.text);
   }
 
   @override
@@ -90,6 +98,7 @@ class _GuideDetailsPageState extends State<GuideDetailsPage> {
                   options: options,
                   onSelect: (c){},
                   onChange: onChange,
+                  onTap: readDetail,
                 ),
               ),
             ]

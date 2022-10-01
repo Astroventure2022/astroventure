@@ -1,5 +1,6 @@
 import 'package:astroventure/colors.dart';
 import 'package:astroventure/guide/categories.dart';
+import 'package:astroventure/tts.dart';
 import 'package:astroventure/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,8 @@ import '../slider_control.dart';
 import 'gamedata.dart';
 
 class GuidesPage extends StatefulWidget {
-  const GuidesPage({Key key}) : super(key: key);
+  const GuidesPage({Key key, @required this.speaker}) : super(key: key);
+  final Speaker speaker;
 
   @override
   State<GuidesPage> createState() => _GuidesPageState();
@@ -16,10 +18,30 @@ class GuidesPage extends StatefulWidget {
 class _GuidesPageState extends State<GuidesPage> {
 
   List<ControlOption> options = [];
+  Guide currentGuide;
 
   void onSelect(ControlOption c){
     var selectedGuide = guides.firstWhere((element) => element.id==c.id);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => GuideCategoriesPage(guide: selectedGuide)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => GuideCategoriesPage(
+      guide: selectedGuide,
+      speaker: widget.speaker,
+    )));
+  }
+
+  void onChange(ControlOption c){
+    setState(() {
+      currentGuide = guides.firstWhere((element) => element.id==c.id);
+    });
+    widget.speaker.speak(c.title);
+  }
+
+  void readAll(ControlOption c){
+    if(currentGuide==null) return;
+    var text = "";
+    for(var c in currentGuide.categories){
+      text += "${c.title}. ";
+    }
+    widget.speaker.speak(text);
   }
 
   @override
@@ -27,7 +49,9 @@ class _GuidesPageState extends State<GuidesPage> {
     for (var c in guides) {
       options.add(ControlOption(id: c.id, title: c.title));
     }
+    currentGuide = guides.first;
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) { })
   }
 
   @override
@@ -64,9 +88,9 @@ class _GuidesPageState extends State<GuidesPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Guide:',
-                          style: TextStyle(
+                        Text(
+                          '${currentGuide.title}:',
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -74,10 +98,10 @@ class _GuidesPageState extends State<GuidesPage> {
                           ),
                         ),
                         const SizedBox(height: 14),
-                        ...List.generate(guides.length, (index) => Padding(
+                        ...List.generate(currentGuide.categories.length, (index) => Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
-                            '${index+1}. ${guides[index].title}',
+                            '${index+1}. ${currentGuide.categories[index].title}',
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -95,6 +119,8 @@ class _GuidesPageState extends State<GuidesPage> {
                 child: SliderControl(
                   options: options,
                   onSelect: onSelect,
+                  onChange: onChange,
+                  onTap: readAll,
                 ),
               ),
             ]

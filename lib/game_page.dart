@@ -1,5 +1,6 @@
 import 'package:astroventure/gamedata.dart';
 import 'package:astroventure/scrolling_text.dart';
+import 'package:astroventure/tts.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,11 +9,12 @@ import 'colors.dart';
 import 'utils.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({Key key, this.missionName, this.missionBrief, this.credit, this.features}) : super(key: key);
+  const GamePage({Key key, this.missionName, this.missionBrief, this.credit, this.features, this.speaker}) : super(key: key);
   final String missionName;
   final String missionBrief;
   final double credit;
   final List<Feature> features;
+  final Speaker speaker;
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -48,6 +50,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   showBrief(context){
+    widget.speaker.speak("${widget.missionName}. ${widget.missionBrief}");
     showModalBottomSheet(
       context: context,
       backgroundColor: CustomColors.background,
@@ -74,6 +77,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   showFeatureDetails(){
+    widget.speaker.speak(widget.features[currentIndex].description);
     setState(() => showDetails = true);
   }
 
@@ -189,6 +193,7 @@ class _GamePageState extends State<GamePage> {
                     return _FeatureItem(
                       feature: widget.features[index],
                       onTap: ()=> addFeature(widget.features[index]),
+                      onSingleTap: ()=> widget.speaker.speak(widget.features[index].title),
                     );
                   },
                 ),
@@ -203,9 +208,10 @@ class _GamePageState extends State<GamePage> {
 
 
 class _FeatureItem extends StatelessWidget {
-  const _FeatureItem({Key key, @required this.feature, this.onTap}) : super(key: key);
+  const _FeatureItem({Key key, @required this.feature, this.onTap, this.onSingleTap}) : super(key: key);
   final Feature feature;
   final VoidCallback onTap;
+  final VoidCallback onSingleTap;
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +220,12 @@ class _FeatureItem extends StatelessWidget {
         HapticFeedback.heavyImpact();
         if(onTap!=null) onTap();
       },
+      onTap: () => () {
+        HapticFeedback.heavyImpact();
+        if(onSingleTap!=null) onSingleTap();
+      },
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         color: Colors.transparent,
         child: Opacity(
           opacity: 1,

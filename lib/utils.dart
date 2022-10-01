@@ -16,13 +16,57 @@ class Option{
   Option({this.id, this.text, this.gameDataId});
 }
 
-class Feature{
-  int id;
+class Feature {
   String title;
+  int highTemp;
+  int lowTemp;
+  int physicalStrength;
+  int lowGravity;
+  int hightGravity;
+  int lowFood;
+  int hightPressure;
+  int lowPressure;
+  int oxygenFreedom;
+  int dnaRepair;
+  int toxicity;
+  int cost;
+  int id;
   String description;
-  double cost;
 
-  Feature({this.id, this.title, this.description, this.cost});
+  Feature(
+      {this.title,
+      this.highTemp,
+      this.lowTemp,
+      this.physicalStrength,
+      this.lowGravity,
+      this.hightGravity,
+      this.lowFood,
+      this.hightPressure,
+      this.lowPressure,
+      this.oxygenFreedom,
+      this.dnaRepair,
+      this.toxicity,
+      this.cost,
+      this.id,
+      this.description});
+
+  Feature.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    highTemp = json['highTemp'];
+    lowTemp = json['lowTemp'];
+    physicalStrength = json['physicalStrength'];
+    lowGravity = json['lowGravity'];
+    hightGravity = json['hightGravity'];
+    lowFood = json['lowFood'];
+    hightPressure = json['hightPressure'];
+    lowPressure = json['lowPressure'];
+    oxygenFreedom = json['oxygenFreedom'];
+    dnaRepair = json['dnaRepair'];
+    toxicity = json['toxicity'];
+    cost = json['cost'];
+    id = json['id'];
+    description = json['text'];
+  }
 }
 
 class ControlOption{

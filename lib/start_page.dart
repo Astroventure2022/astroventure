@@ -1,5 +1,6 @@
 import 'package:astroventure/gamedata.dart';
 import 'package:astroventure/scrolling_text.dart';
+import 'package:astroventure/tts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,7 +8,8 @@ import 'colors.dart';
 import 'game_page.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key key}) : super(key: key);
+  const StartPage({Key key, @required this.speaker}) : super(key: key);
+  final Speaker speaker;
 
   @override
   State<StartPage> createState() => _StartPageState();
@@ -24,7 +26,20 @@ class _StartPageState extends State<StartPage> {
       missionBrief: missionBrief,
       credit: credit,
       features: features,
+      speaker: widget.speaker
     )));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.speaker.speak('$missionTitle. $missionBrief');
+  }
+
+  @override
+  void dispose() {
+    widget.speaker.stop();
+    super.dispose();
   }
 
   @override
@@ -56,7 +71,7 @@ class _StartPageState extends State<StartPage> {
                       child: Text(
                         missionTitle,
                         style: TextStyle(
-                          color: CustomColors.primary,
+                          color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
                         ),
@@ -72,7 +87,8 @@ class _StartPageState extends State<StartPage> {
             ),
             Expanded(
               child: GestureDetector(
-                onTap: ()=> startGame(context),
+                onTap: () => widget.speaker.speak('Start!'),
+                onDoubleTap: ()=> startGame(context),
                 child: briefDone?const Center(
                   child: Text(
                     'START',

@@ -1,13 +1,15 @@
 import 'package:astroventure/colors.dart';
 import 'package:astroventure/guide/details.dart';
+import 'package:astroventure/tts.dart';
 import 'package:astroventure/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../slider_control.dart';
 
 class GuideCategoriesPage extends StatefulWidget {
-  const GuideCategoriesPage({Key key, @required this.guide}) : super(key: key);
+  const GuideCategoriesPage({Key key, @required this.guide, @required this.speaker}) : super(key: key);
   final Guide guide;
+  final Speaker speaker;
 
   @override
   State<GuideCategoriesPage> createState() => _GuideCategoriesPageState();
@@ -19,6 +21,7 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
   GuideCategory currentCategory;
 
   void onCategoryChange(ControlOption c){
+    widget.speaker.speak(c.title);
     setState(() {
       currentCategory = widget.guide.categories.firstWhere((element) => element.id==c.id);
     });
@@ -26,7 +29,16 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
 
   void onSelect(ControlOption c){
     var selectedCategory = widget.guide.categories.firstWhere((element) => element.id==c.id);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => GuideDetailsPage(category: selectedCategory)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => GuideDetailsPage(category: selectedCategory, speaker: widget.speaker)));
+  }
+
+  void readAll(ControlOption c){
+    if(currentCategory==null) return;
+    var text = "";
+    for(var c in currentCategory.items){
+      text += "${c.title}. ";
+    }
+    widget.speaker.speak(text);
   }
 
   @override
@@ -75,7 +87,7 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${widget.guide.title}:',
+                            '${currentCategory.title}:',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -106,6 +118,7 @@ class _GuideCategoriesPageState extends State<GuideCategoriesPage> {
                   options: options,
                   onSelect: onSelect,
                   onChange: onCategoryChange,
+                  onTap: readAll,
                 ),
               ),
             ]

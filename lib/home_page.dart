@@ -1,3 +1,4 @@
+import 'package:astroventure/bluetooth.dart';
 import 'package:astroventure/guide_page.dart';
 import 'package:astroventure/slider_control.dart';
 import 'package:astroventure/tts.dart';
@@ -16,57 +17,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   List<ControlOption> options = [
-    ControlOption(id: 1, title: "Play", ),
+    ControlOption(
+      id: 1,
+      title: "Play",
+    ),
     ControlOption(id: 2, title: "Guides")
   ];
+
+  Bluetooth bluetooth;
+  Speaker speaker;
+
+  void initState() {
+    bluetooth = Bluetooth();
+    speaker = Speaker(bluetooth: bluetooth);
+    bluetooth.connect();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.background,
       body: SafeArea(
-        child: Column(
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            const Expanded(
-              flex: 1,
-              child: Hero(
-                tag: 'title',
-                child: Material(
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: EdgeInsets.all(25.0),
-                    child: Text(
-                      "Astroventure",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+            Image.asset("assets/images/BG.png", fit: BoxFit.cover),
+            Hero(tag: 'title', child: Image.asset("assets/images/Title.png", fit: BoxFit.contain)),
+            Column(children: [
+              const Spacer(
+                flex: 1,
+              ),
+              Expanded(child: Container()),
+              Expanded(
+                child: SliderControl(
+                  options: options,
+                  onSelect: (c) {
+                    if (c.id == 1) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StartPage(speaker: speaker,)));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GuidesPage(
+                                    speaker: speaker,
+                                  )));
+                    }
+                  },
+                  onChange: (c) {
+                    Speaker speaker = Speaker();
+                    speaker.speak(c.title);
+                  },
                 ),
               ),
-            ),
-            Expanded(child: Container()),
-            Expanded(
-              child: SliderControl(
-                options: options,
-                onSelect: (c){
-                  if(c.id==1){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const StartPage()));
-                  } else {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GuidesPage()));
-                  }
-                },
-                onChange: (c){
-                  Speaker speaker = Speaker();
-                  speaker.speak(c.title);
-                },
-              ),
-            ),
-          ]
+            ]),
+          ],
         ),
       ),
     );

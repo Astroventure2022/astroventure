@@ -1,9 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
     package="com.spaceapp.astroventure.astroventure">
+    
+
+    <uses-permission android:name="android.permission.BLUETOOTH" tools:node="replace" />  
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />  
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />  
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    
    <application
         android:label="astroventure"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
